@@ -86,7 +86,7 @@ app.use(function(req, res, next) {
 
 app.get('/', (req,res) => {
     console.log(`Get show api ${path.join(__dirname + '/api.html')}`);
-
+    //res.set("Content-Type", "text/html");
     res.sendFile(path.join(__dirname + '/public/api.html'));
 });
 
