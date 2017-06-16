@@ -1,10 +1,11 @@
 const mongoose  =   require('mongoose'),
+      conn  =   require('../database'),
       Post      =   require('../models/post'),
       Status    =   require('../models/status'),
       ObjectId  = mongoose.Types.ObjectId,
       User      =   require('../models/user');
 
-const conn = mongoose.connection;//get default connection
+//const conn = mongoose.connection;//get default connection
 console.log(`conn obect ${conn}`);
 //Add new user to 'users' collection
 exports.registerNewUser = (req,res) => { 

@@ -28,3 +28,5 @@ conn.on('disconnected', function() {
 conn.on('reconnected', function () {
     console.info('Mongoose reconnected!');
 });
+
+module.exports = conn;
