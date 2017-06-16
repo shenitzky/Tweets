@@ -26,7 +26,7 @@ app.use(session({
   ephemeral: true
 }));
 
-app.set('port',port);
+//app.set('port',port);
 app.use(
   (req,res,next) => {
   res.header("Access-Control-Allow-Origin", "*");
