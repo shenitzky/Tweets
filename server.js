@@ -41,7 +41,7 @@ app.use(
     res.header(
       "Access-Control-Allow-Credentials", true
   );
-  //res.set("Content-Type", "application/json");
+  res.set("Content-Type", "application/json");
   next();
 });
 
