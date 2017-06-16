@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Tweets</title> 
+	</head>	
+	<body>
+		<header>
+			<h1>Tweets API:</h1>
+		</header>
+		<main>
+			<p>
+				<h4>Method: POST /register</h4>
+				<p>
+					<h6>Parameter: userName (str), password (str), imgUrl (str)</h6>
+					<h6>return Boolean: True if succeed false otherwise</h6>
+				</p>
+			</p>
+			<p>
+				<h4>Method:GET /getUserStatuses</h4>
+				<p>
+					<h6>Parameter: None (user shoul be logged in)</h6>
+					<h6>return Json with requested statuses</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/userStatuses.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: POST /addUserStatus</h4>
+				<p>
+					<h6>Parameter: statusContent (str)</h6>
+					<h6>return Boolean: True if succeed false otherwise</h6>
+					<h6>Errors: If exception occured on the server</h6>
+				</p>
+			</p>
+			<p>
+				<h4>Method: POST /IncTweetForStatus</h4>
+				<p>
+					<h6>Parameter: statusId (int)</h6>
+					<h6>return Boolean: True if succeed false otherwise</h6>
+					<h6>Errors: If exception occured on the server</h6>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetTop10Statuses</h4>
+				<p>
+					<h6>Parameter: None</h6>
+					<h6>return Json with requested statuses</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/top10.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetAllPosts</h4>
+				<p>
+					<h6>Parameter: None</h6>
+					<h6>return Json with requested posts</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/allPosts.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetAllPostsSummery</h4>
+				<p>
+					<h6>Parameter: None</h6>
+					<h6>return Json with requested posts summery</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/allPostsSummery.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>In case of error, Json with the following stracture will return:</h4>
+				<img src="/assets/images/error.png"/>
+			</p>	
+		</main>
+	</body>
+</html>
