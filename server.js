@@ -1,7 +1,7 @@
 const express           = require('express'),
       url               = require('url'),
       mongoose          = require('mongoose'),
-      User              = require('./user');
+      User              = require('./models/user');
       app               = express(),
       bodyParser        = require('body-parser'),
       TweetsManager     = require('./controllers/TweetsController.js'),
@@ -9,7 +9,7 @@ const express           = require('express'),
       session           = require('client-sessions'),
       port              = process.env.PORT || 3000;
 
-const conn = mongoose.connection;//get default connection
+//const conn = mongoose.connection;//get default connection
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -46,7 +46,7 @@ app.use(
 });
 
 app.post('/login', function(req, res) {
-  conn.collection('users').findOne({ userName: req.body.name }, function(err, user) {
+  User.findOne({ userName: req.body.name }, function(err, user) {
     if (!user) {
       res.json({"error": "user name not exists"});
     } else {
@@ -68,7 +68,7 @@ app.get('/logout', function(req, res) {
 //Middleware to check if the user logged in
 app.use(function(req, res, next) {
   if (req.session && req.session.user) {
-    conn.collection('users').findOne({ userName: req.session.user.userName }, function(err, user) {
+    User.findOne({ userName: req.session.user.userName }, function(err, user) {
       if (user) {
         req.user = user;
         delete req.user.password; // delete the password from the session

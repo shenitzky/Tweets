@@ -1,17 +1,11 @@
 const mongoose  =   require('mongoose'),
-      Post      =   require('../post'),
-      Status    =   require('../status'),
+      Post      =   require('../models/post'),
+      Status    =   require('../models/status'),
       ObjectId  = mongoose.Types.ObjectId,
-      User      =   require('../user');
+      User      =   require('../models/user');
 
 const conn = mongoose.connection;//get default connection
-
-conn.on('error',(err) => {
-        console.log(`connection error: ${err}`);
-        return genarateErrorJson("Connction with Data Base failed");
-});
-
-
+console.log(`conn obect ${conn}`);
 //Add new user to 'users' collection
 exports.registerNewUser = (req,res) => { 
   var name = req.body.userName,
