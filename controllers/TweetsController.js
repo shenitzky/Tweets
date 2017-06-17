@@ -102,7 +102,6 @@ exports.IncTweetForStatus = (req,res) => {
 //Get Top status object
 exports.GetTopStatusObj = (req,res) => { 
   console.log(`Fetch top status object`);
-
   conn.collection('users').aggregate(
     [
      { $unwind: "$statuses" },
