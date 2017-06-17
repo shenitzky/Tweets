@@ -112,6 +112,10 @@ app.get('/GetTop10Statuses', (req,res) => {
     return TweetsManager.GetTop10Statuses(req,res);
 });
 
+app.get('/GetTopStatusObj', (req,res) => {
+    return TweetsManager.GetTopStatusObj(req,res);
+});
+
 app.get('/GetAllPosts', (req,res) => {
     return TweetsManager.GetAllPosts(req,res);
 });

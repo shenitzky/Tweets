@@ -53,6 +53,7 @@ exports.addUserStatus = (req,res) => {
   
   var name          = req.session.user.userName,
       statusContent = req.body.statusContent;
+      currDate      = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
   console.log(`Add status for user: ${name}`);
   try{
@@ -60,7 +61,7 @@ exports.addUserStatus = (req,res) => {
       {userName: name}, {
       $push: { statuses: {  
         _id: new ObjectId(),     
-        date: new Date(),
+        date: currDate,
         content: statusContent,
         tweets: 0,
         likes: 0,
@@ -98,6 +99,26 @@ exports.IncTweetForStatus = (req,res) => {
   return true;
 }
 
+//Get Top status object
+exports.GetTopStatusObj = (req,res) => { 
+  console.log(`Fetch top status object`);
+
+  conn.collection('users').aggregate(
+    [
+     { $unwind: "$statuses" },
+     { $sort: { "statuses.tweets": -1 } },
+     { $limit: 10 } 
+    ]
+    ).toArray(function(err, statuses) {
+            console.log(statuses[0].statuses);
+            var topStatus = {};
+            topStatus["userName"] = statuses[0].userName;
+            topStatus["statusObj"] = statuses[0].statuses;
+            return res.send(topStatus);
+       });
+    return;
+}
+
 //Get top 10 statuses by tweets number
 exports.GetTop10Statuses = (req,res) => { 
   console.log(`Fetch to 10 statuses`);
@@ -110,10 +131,15 @@ exports.GetTop10Statuses = (req,res) => {
     ]
     ).toArray(function(err, statuses) {
             var result = [];
+            
             for(var statusIndex in statuses){
-              var tmpStatus = statuses[statusIndex].statuses;
-              console.log(`tmpStatus: ${tmpStatus}`);
-              result.push(tmpStatus);
+              var tempStatus = {};
+              tempStatus["userName"] = statuses[statusIndex].userName;
+              tempStatus["tweets"] = statuses[statusIndex].statuses.tweets;
+              tempStatus["likes"] = statuses[statusIndex].statuses.likes;
+              console.log(`tempStatus: ${tempStatus}`);
+
+              result.push(tempStatus);
             }
             console.log(result);
             return res.send(result);
