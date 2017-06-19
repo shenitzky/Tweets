@@ -127,7 +127,7 @@ exports.GetStatusById = (req,res) => {
 
   conn.collection('users').aggregate(
     [
-     { $unwind: "$statuses" },} 
+     { $unwind: "$statuses" }
     ]
     ).toArray(function(err, statuses) {
              for(var index in statuses){
