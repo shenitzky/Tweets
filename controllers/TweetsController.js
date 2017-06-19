@@ -123,15 +123,11 @@ exports.GetStatusById = (req,res) => {
   var query   = urlPart.query;
 
   var statusId = query.statusId;
-  //var objId = new mongoose.Types.ObjectId(statusId);
   console.log(`Fetch status ${statusId}`);
 
   conn.collection('users').aggregate(
     [
-     { $unwind: "$statuses" },
-     //{ $match: {"$$oid": objId} },
-     // { $sort: { "statuses.tweets": -1 } },
-     // { $limit: 10 } 
+     { $unwind: "$statuses" },} 
     ]
     ).toArray(function(err, statuses) {
              for(var index in statuses){
@@ -142,6 +138,7 @@ exports.GetStatusById = (req,res) => {
                   status["statusObj"] = statuses[index].statuses;
                   return res.send(status);
                 }
+            return res.send(genarateErrorJson("Status ${statusId} not found"));
           }
        });
     return;
