@@ -130,6 +130,8 @@ exports.GetStatusById = (req,res) => {
      { $unwind: "$statuses" }
     ]
     ).toArray(function(err, statuses) {
+             console.log(statuses);
+             var found = false;
              for(var index in statuses){
                 if(statuses[index].statuses._id == statusId){
                   console.log(statuses[index]);
@@ -138,9 +140,9 @@ exports.GetStatusById = (req,res) => {
                   status["statusObj"] = statuses[index].statuses;
                   return res.send(status);
                 }
-                else{
-                  return res.send(genarateErrorJson("Status not found"));
-                }
+          }
+          if(!found){
+            return res.send(genarateErrorJson("Status not found"));
           }
        });
     return;
