@@ -138,7 +138,9 @@ exports.GetStatusById = (req,res) => {
                   status["statusObj"] = statuses[index].statuses;
                   return res.send(status);
                 }
-            return res.send(genarateErrorJson("Status ${statusId} not found"));
+                else{
+                  return res.send(genarateErrorJson("Status not found"));
+                }
           }
        });
     return;
