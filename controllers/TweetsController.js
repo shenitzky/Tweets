@@ -1,12 +1,11 @@
 const mongoose  =   require('mongoose'),
-      conn  =   require('../database'),
+      conn      =   require('../database'),
+      url       = require('url'),
       Post      =   require('../models/post'),
       Status    =   require('../models/status'),
       ObjectId  = mongoose.Types.ObjectId,
       User      =   require('../models/user');
 
-//const conn = mongoose.connection;//get default connection
-console.log(`conn obect ${conn}`);
 //Add new user to 'users' collection
 exports.registerNewUser = (req,res) => { 
   var name = req.body.userName,
@@ -114,6 +113,36 @@ exports.GetTopStatusObj = (req,res) => {
             topStatus["userName"] = statuses[0].userName;
             topStatus["statusObj"] = statuses[0].statuses;
             return res.send(topStatus);
+       });
+    return;
+}
+
+//Get status by id
+exports.GetStatusById = (req,res) => { 
+  var urlPart = url.parse(req.url, true);
+  var query   = urlPart.query;
+
+  var statusId = query.statusId;
+  //var objId = new mongoose.Types.ObjectId(statusId);
+  console.log(`Fetch status ${statusId}`);
+
+  conn.collection('users').aggregate(
+    [
+     { $unwind: "$statuses" },
+     //{ $match: {"$$oid": objId} },
+     // { $sort: { "statuses.tweets": -1 } },
+     // { $limit: 10 } 
+    ]
+    ).toArray(function(err, statuses) {
+             for(var index in statuses){
+                if(statuses[index].statuses._id == statusId){
+                  console.log(statuses[index]);
+                  var status = {};
+                  status["userName"] = statuses[index].userName;
+                  status["statusObj"] = statuses[index].statuses;
+                  return res.send(status);
+                }
+          }
        });
     return;
 }
