@@ -1,9 +1,10 @@
 const mongoose  =   require('mongoose'),
       conn      =   require('../database'),
-      url       = require('url'),
+      url       =   require('url'),
       Post      =   require('../models/post'),
       Status    =   require('../models/status'),
-      ObjectId  = mongoose.Types.ObjectId,
+      ObjectId  =   mongoose.Types.ObjectId,
+      consts    =   require('../consts'),
       User      =   require('../models/user');
 
 //Add new user to 'users' collection
@@ -187,7 +188,7 @@ exports.GetAllPosts = (req,res) => {
   return;
 }
 
-//Get all posts in the system
+//Get all posts summery in the system
 exports.GetAllPostsSummery = (req,res) => { 
   console.log(`Fetch all posts summery`);
   conn.collection('posts').find({}, {'_id': 0}).toArray(function(err, posts) {
@@ -206,12 +207,15 @@ exports.GetAllPostsSummery = (req,res) => {
 //Add new post
 exports.addNewPost = (req,res) => { 
   
-  var content = req.body.postContent,
-      title   = req.body.postTitle;
+  var content   = req.body.postContent,
+      title     = req.body.postTitle;
+      category  = req.body.category;
+      currDate  = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
   var newPost = new Post({
           title: title,
-          date: new Date(),
+          date: currDate,
+          category: category,
           mainImgUrl: "",
           contentImgsUrl: "",
           content: content,
@@ -232,6 +236,76 @@ exports.addNewPost = (req,res) => {
   res.send(true);
   return true;
 }
+
+//Get Post By Id
+exports.GetPostById = (req,res) => { 
+  var urlPart = url.parse(req.url, true);
+  var query   = urlPart.query;
+
+  var postId = query.postId;
+
+  console.log(`Get Post by id ${postId}`);
+  conn.collection('posts').find(
+    {'_id': ObjectId(postId)}
+    ).toArray(function(err, posts) {
+           console.log(posts[0]);
+           res.send(posts[0]);
+           return;
+       });
+  return;
+}
+
+//Get posts summery by category
+exports.GetPostsSummeryByCategory = (req,res) => { 
+  var urlPart = url.parse(req.url, true);
+  var query   = urlPart.query;
+
+  var category = query.category;
+
+  console.log(`Fetch all posts summery where category is ${category}`);
+
+  conn.collection('posts').find(
+    {'category': category},
+    {'_id': 0},
+    { $limit: 3 }
+  ).toArray(function(err, posts) {
+            var result = [];
+            for(var postIndex in posts){
+              var splitedString = posts[postIndex].content.split(/[,.]+/, 5);
+              console.log(`splited: ${splitedString}`);
+              result.push(splitedString);
+            }
+            console.log(result);
+            return res.send(result);
+       });
+  return;
+}
+
+//Get posts by category
+exports.GetPostsByCategory = (req,res) => { 
+  var urlPart = url.parse(req.url, true);
+  var query   = urlPart.query;
+
+  var category = query.category;
+
+  console.log(`Fetch all posts with category ${category} summery`);
+
+  conn.collection('posts').find(
+      {'category': category},
+      {'_id': 0}
+      ).toArray(function(err, posts) {
+           console.log(posts);
+           res.send(posts);
+           return;
+       });
+  return;
+}
+
+//Get all posts categories
+exports.GetPostsCategories = (req,res) => { 
+  res.send(consts.CATEGORIES);
+}
+
 
 const genarateErrorJson = (msg) => {
     var errorJson = {};

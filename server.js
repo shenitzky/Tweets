@@ -46,6 +46,7 @@ app.use(
 });
 
 app.post('/login', function(req, res) {
+  console.log(`login user ${req.body.name} with pass ${req.body.password}`);
   User.findOne({ userName: req.body.name }, function(err, user) {
     if (!user) {
       res.json({"error": "user name not exists"});
@@ -130,6 +131,22 @@ app.get('/GetAllPostsSummery', (req,res) => {
 
 app.post('/addNewPost', (req,res) => {
     return TweetsManager.addNewPost(req,res);
+});
+
+app.get('/GetPostById', (req,res) => {
+    return TweetsManager.GetPostById(req,res);
+});
+
+app.get('/GetPostsSummeryByCategory', (req,res) => {
+    return TweetsManager.GetPostsSummeryByCategory(req,res);
+});
+
+app.get('/GetPostsByCategory', (req,res) => {
+    return TweetsManager.GetPostsByCategory(req,res);
+});
+
+app.get('/GetPostsCategories', (req,res) => {
+    return TweetsManager.GetPostsCategories(req,res);
 });
 
 app.all('*', (req,res) => {

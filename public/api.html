@@ -88,6 +88,50 @@
 				</p>
 			</p>
 			<p>
+				<h4>Method: Post /addNewPost</h4>
+				<p>
+					<h6>Parameter: postContent (str), postTitle (str), category (str)</h6>
+					<h6>return true id succeded false otherwise </h6>
+					<h6>Errors: If exception occured on the server</h6>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetPostById</h4>
+				<p>
+					<h6>Parameter: postId (str)</h6>
+					<h6>return Json with requested post</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/get_post_by_id.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetPostsSummeryByCategory</h4>
+				<p>
+					<h6>Parameter: category (str)</h6>
+					<h6>return Json with requested posts summery, limit to 3 only</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/posts_summery_by_category.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetPostsByCategory</h4>
+				<p>
+					<h6>Parameter: category (str)</h6>
+					<h6>return Json with requested posts</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/posts_by_category.png"/>
+				</p>
+			</p>
+			<p>
+				<h4>Method: GET /GetPostsCategories</h4>
+				<p>
+					<h6>None</h6>
+					<h6>return Json with requested post categories</h6>
+					<h6>Errors: If exception occured on the server</h6>
+					<img src="/assets/images/posts_categories.png"/>
+				</p>
+			</p>
+			<p>
 				<h4>In case of error, Json with the following stracture will return:</h4>
 				<img src="/assets/images/error.png"/>
 			</p>	

@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     postSchema = new schema({
         title: {type:String, required:true},
         date: {type:String, required:true},
+        category: {type:String, required:true},
         mainImgUrl: {type:String, required:true},
         contentImgsUrl: [String],
         content: {type:String, required:true},
