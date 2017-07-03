@@ -101,7 +101,7 @@ app.get('/getUserStatuses',requireLogin, (req,res) => {
     
 });
 
-app.post('/addUserStatus',requireLogin, (req,res) => {
+app.post('/addUserStatus', (req,res) => {
     return TweetsManager.addUserStatus(req,res);
 });
 

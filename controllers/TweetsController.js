@@ -118,6 +118,38 @@ exports.GetTopStatusObj = (req,res) => {
     return;
 }
 
+// //Get status by id
+// exports.GetStatusById = (req,res) => { 
+//   var urlPart = url.parse(req.url, true);
+//   var query   = urlPart.query;
+
+//   var statusId = query.statusId;
+//   console.log(`Fetch status ${statusId}`);
+
+//   conn.collection('users').aggregate(
+//     [
+//      { $unwind: "$statuses" }
+//     ]
+//     ).toArray(function(err, statuses) {
+//              console.log(statuses);
+//              var found = false;
+//              for(var index in statuses){
+//                 if(statuses[index].statuses._id == statusId){
+//                   console.log(statuses[index]);
+//                   var status = {};
+//                   status["userName"] = statuses[index].userName;
+//                   status["imgUrl"] = statuses[index].imgUrl;
+//                   status["statusObj"] = statuses[index].statuses;
+//                   return res.send(status);
+//                 }
+//           }
+//           if(!found){
+//             return res.send(genarateErrorJson("Status not found"));
+//           }
+//        });
+//     return;
+// }
+
 //Get status by id
 exports.GetStatusById = (req,res) => { 
   var urlPart = url.parse(req.url, true);
@@ -126,19 +158,18 @@ exports.GetStatusById = (req,res) => {
   var statusId = query.statusId;
   console.log(`Fetch status ${statusId}`);
 
-  conn.collection('users').aggregate(
-    [
-     { $unwind: "$statuses" }
-    ]
-    ).toArray(function(err, statuses) {
-             console.log(statuses);
+  conn.collection('users').find(
+     {"statuses._id": ObjectId(statusId)}
+    ).toArray(function(err, user) {
+             console.log(user[0]);
              var found = false;
-             for(var index in statuses){
-                if(statuses[index].statuses._id == statusId){
-                  console.log(statuses[index]);
+             for(var index in user[0].statuses){
+                if(user[0].statuses[index]._id == statusId){
+                  console.log(user[0].statuses[index]);
                   var status = {};
-                  status["userName"] = statuses[index].userName;
-                  status["statusObj"] = statuses[index].statuses;
+                  status["userName"] = user[0].userName;
+                  status["imgUrl"] = user[0].imgUrl;
+                  status["statusObj"] = user[0].statuses[index];
                   return res.send(status);
                 }
           }
