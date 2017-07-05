@@ -19,7 +19,7 @@
 			<p>
 				<h4>Method:GET /getUserStatuses</h4>
 				<p>
-					<h6>Parameter: None (user shoul be logged in)</h6>
+					<h6>Parameter: userName (str)</h6>
 					<h6>return Json with requested statuses</h6>
 					<h6>Errors: If exception occured on the server</h6>
 					<img src="/assets/images/userStatuses.png"/>
@@ -28,7 +28,7 @@
 			<p>
 				<h4>Method: POST /addUserStatus</h4>
 				<p>
-					<h6>Parameter: statusContent (str)</h6>
+					<h6>Parameter: statusContent (str), userName (str)</h6>
 					<h6>return Boolean: True if succeed false otherwise</h6>
 					<h6>Errors: If exception occured on the server</h6>
 				</p>

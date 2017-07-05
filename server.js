@@ -96,12 +96,11 @@ app.post('/register', (req,res) => {
     
 });
 
-app.get('/getUserStatuses',requireLogin, (req,res) => {
+app.get('/getUserStatuses', (req,res) => {
     return TweetsManager.getUserStatuses(req,res);
-    
 });
 
-app.post('/addUserStatus', (req,res) => {
+app.post('/addUserStatus',requireLogin, (req,res) => {
     return TweetsManager.addUserStatus(req,res);
 });
 
@@ -158,11 +157,18 @@ app.all('*', (req,res) => {
 
 //Function to invoke before methods that requiers login
 function requireLogin (req, res, next) {
-  if (!req.user) {
-    res.json({"error": "you are not logged in, login and try again"});
-  } else {
-    next();
-  }
+    User.findOne({ userName: req.body.userName }, function(err, user) {
+    if (!user) {
+      res.json({"error": "user name not exists"});
+    } else {
+      next();
+    }
+  });
+  // if (!req.user) {
+  //   res.json({"error": "you are not logged in, login and try again"});
+  // } else {
+  //   next();
+  // }
 };
 
 app.listen(port);

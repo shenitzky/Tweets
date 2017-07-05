@@ -35,7 +35,10 @@ exports.registerNewUser = (req,res) => {
 
 //Get all user statuses
 exports.getUserStatuses = (req,res) => { 
-  name = req.session.user.userName;
+  var urlPart = url.parse(req.url, true);
+  var query   = urlPart.query;
+
+  var name = query.userName;
   console.log(`find user: ${name}`);
 
   conn.collection('users').find(
@@ -50,8 +53,7 @@ exports.getUserStatuses = (req,res) => {
 
 //Add new status to user
 exports.addUserStatus = (req,res) => { 
-  
-  var name          = req.session.user.userName,
+  var name          = req.body.userName,
       statusContent = req.body.statusContent;
       currDate      = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
