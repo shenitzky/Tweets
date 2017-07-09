@@ -120,38 +120,6 @@ exports.GetTopStatusObj = (req,res) => {
     return;
 }
 
-// //Get status by id
-// exports.GetStatusById = (req,res) => { 
-//   var urlPart = url.parse(req.url, true);
-//   var query   = urlPart.query;
-
-//   var statusId = query.statusId;
-//   console.log(`Fetch status ${statusId}`);
-
-//   conn.collection('users').aggregate(
-//     [
-//      { $unwind: "$statuses" }
-//     ]
-//     ).toArray(function(err, statuses) {
-//              console.log(statuses);
-//              var found = false;
-//              for(var index in statuses){
-//                 if(statuses[index].statuses._id == statusId){
-//                   console.log(statuses[index]);
-//                   var status = {};
-//                   status["userName"] = statuses[index].userName;
-//                   status["imgUrl"] = statuses[index].imgUrl;
-//                   status["statusObj"] = statuses[index].statuses;
-//                   return res.send(status);
-//                 }
-//           }
-//           if(!found){
-//             return res.send(genarateErrorJson("Status not found"));
-//           }
-//        });
-//     return;
-// }
-
 //Get status by id
 exports.GetStatusById = (req,res) => { 
   var urlPart = url.parse(req.url, true);
@@ -213,7 +181,7 @@ exports.GetTop10Statuses = (req,res) => {
 //Get all posts in the system
 exports.GetAllPosts = (req,res) => { 
   console.log(`Fetch all posts`);
-  conn.collection('posts').find({}, {'_id': 0}).toArray(function(err, posts) {
+  conn.collection('posts').find({}).toArray(function(err, posts) {
            console.log(posts);
            res.send(posts);
            return;
@@ -224,12 +192,18 @@ exports.GetAllPosts = (req,res) => {
 //Get all posts summery in the system
 exports.GetAllPostsSummery = (req,res) => { 
   console.log(`Fetch all posts summery`);
-  conn.collection('posts').find({}, {'_id': 0}).toArray(function(err, posts) {
+  conn.collection('posts').find({}).toArray(function(err, posts) {
             var result = [];
             for(var postIndex in posts){
               var splitedString = posts[postIndex].content.split(/[,.]+/, 5);
-              console.log(`splited: ${splitedString}`);
-              result.push(splitedString);
+              var summeryObj = {};
+              summeryObj['_id'] = posts[postIndex]._id;
+              summeryObj['date'] = posts[postIndex].date;
+              summeryObj['title'] = posts[postIndex].title;
+              summeryObj['category'] = posts[postIndex].category;
+              summeryObj['mainImgUrl'] = posts[postIndex].mainImgUrl;
+              summeryObj['summery'] = splitedString;
+              result.push(summeryObj);
             }
             console.log(result);
             return res.send(result);
@@ -298,15 +272,19 @@ exports.GetPostsSummeryByCategory = (req,res) => {
   console.log(`Fetch all posts summery where category is ${category}`);
 
   conn.collection('posts').find(
-    {'category': category},
-    {'_id': 0},
-    { $limit: 3 }
+    {'category': category}
   ).toArray(function(err, posts) {
             var result = [];
             for(var postIndex in posts){
               var splitedString = posts[postIndex].content.split(/[,.]+/, 5);
-              console.log(`splited: ${splitedString}`);
-              result.push(splitedString);
+              var summeryObj = {};
+              summeryObj['_id'] = posts[postIndex]._id;
+              summeryObj['date'] = posts[postIndex].date;
+              summeryObj['title'] = posts[postIndex].title;
+              summeryObj['category'] = posts[postIndex].category;
+              summeryObj['mainImgUrl'] = posts[postIndex].mainImgUrl;
+              summeryObj['summery'] = splitedString;
+              result.push(summeryObj);
             }
             console.log(result);
             return res.send(result);
@@ -324,8 +302,7 @@ exports.GetPostsByCategory = (req,res) => {
   console.log(`Fetch all posts with category ${category} summery`);
 
   conn.collection('posts').find(
-      {'category': category},
-      {'_id': 0}
+      {'category': category}
       ).toArray(function(err, posts) {
            console.log(posts);
            res.send(posts);

@@ -9,7 +9,6 @@ const express           = require('express'),
       session           = require('client-sessions'),
       port              = process.env.PORT || 3000;
 
-//const conn = mongoose.connection;//get default connection
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -26,7 +25,6 @@ app.use(session({
   ephemeral: true
 }));
 
-//app.set('port',port);
 app.use(
   (req,res,next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -53,7 +51,8 @@ app.post('/login', function(req, res) {
     } else {
       if (req.body.password === user.password) {
         req.session.user = user;
-        res.send(true);
+        console.log(user['imgUrl'])
+        res.json(user['imgUrl']);
       } else {
         res.json({"error": "invalid password"});
       }
@@ -164,11 +163,6 @@ function requireLogin (req, res, next) {
       next();
     }
   });
-  // if (!req.user) {
-  //   res.json({"error": "you are not logged in, login and try again"});
-  // } else {
-  //   next();
-  // }
 };
 
 app.listen(port);
